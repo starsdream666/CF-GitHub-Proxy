@@ -1,9 +1,5 @@
 # CF-Workers-GitHub-Proxy
-#### 2025.5.25修改，现已支持github api加速！🎉🎉🎉
-## 桌面端预览
-![desktop](src/desktop.png)
-## 移动端预览
-![mobile](src/mobile.png)
+#### 2025.6.12 更新：全新 Web 界面 · 浅色/深色主题 · Git Clone 一键复制 · Push 支持 🎉
 ## 简介
 github release、archive以及项目文件的加速项目，支持clone，github api，Cloudflare Workers 版本
 
@@ -11,7 +7,18 @@ github release、archive以及项目文件的加速项目，支持clone，github
 
 直接在copy出来的url前加`https://ghfile.geekertao.top/`,`https://gh.geekertao.top/`,`https://github.dpik.top/`或`https://gh.felicity.ac.cn/`即可
 
-也可以直接访问，在input输入
+也可以直接访问你的代理域名，使用 Web 界面操作。
+
+### 🆕 Web 界面功能
+
+- 🌓 **浅色/深色主题** — 一键切换，自动记忆偏好
+- 📦 **Git Clone 加速** — 输入仓库路径，一键生成并复制 clone 命令
+- 🚀 **文件/API 加速** — 粘贴 GitHub 链接即刻加速访问
+- 📋 **示例点击填充** — 6 种常见 URL 格式，点击自动填入
+- ⌨️ **键盘快捷键** — `Ctrl+K` 聚焦输入框，`Ctrl+J` 聚焦 clone 输入
+- 💡 **Push 提示** — 引导用户运行 `setup.sh` / `setup.ps1` 配置 push 直连
+
+界面代码位于 [index.html](./index.html)，已内嵌于 Worker 中，无需额外托管。
 
 ***大量使用建议自行部署，以上域名仅为演示使用，可以轻量使用。***
 
