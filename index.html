@@ -415,7 +415,7 @@
                         type="text"
                         class="clone-repo-input"
                         id="repoInput"
-                        placeholder="输入仓库路径，如 user/repo"
+                        placeholder="输入仓库，如 user/repo 或完整 GitHub 地址"
                         oninput="updateCloneCmd()"
                     />
                     <button class="btn btn-outline btn-sm" onclick="copyCloneCmd()" id="copyCloneBtn">
@@ -488,17 +488,32 @@
 
         /* ====== 更新 Clone 命令 ====== */
         function updateCloneCmd() {
-            const repo = document.getElementById('repoInput').value.trim();
-            const output = document.getElementById('cloneCmdOutput');
-            if (repo) {
-                const parts = repo.split('/');
-                if (parts.length === 2 && parts[0] && parts[1]) {
-                    output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + repo + '.git';
-                } else {
-                    output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + repo;
-                }
-            } else {
+            var raw = document.getElementById('repoInput').value.trim();
+            var output = document.getElementById('cloneCmdOutput');
+            if (!raw) {
                 output.value = 'git clone https://' + proxyDomain + '/https://github.com/user/repo.git';
+                return;
+            }
+            /* 智能解析：兼容 user/repo、完整 URL、git clone 命令 */
+            var repo = raw
+                .replace(/^git\s+clone\s+/i, '')   // 去掉 git clone 前缀
+                .replace(/^https?:\/\/github\.com\//i, '')  // 去掉 GitHub URL
+                .replace(/\.git$/i, '')             // 去掉 .git 后缀
+                .replace(/\/+$/, '');               // 去掉尾部斜杠
+            var parts = repo.split('/');
+            var user = '', repoName = '';
+            if (parts.length >= 2) {
+                // 取最后两段有意义的部分
+                var clean = parts.filter(function(p) { return p.length > 0; });
+                if (clean.length >= 2) {
+                    user = clean[clean.length - 2];
+                    repoName = clean[clean.length - 1];
+                }
+            }
+            if (user && repoName) {
+                output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + user + '/' + repoName + '.git';
+            } else {
+                output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + repo;
             }
         }
 
