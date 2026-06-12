@@ -434,7 +434,7 @@
                     onclick="this.select();copyCloneCmd()"
                 />
                 <p style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">
-                    💡 Clone 后请执行项目内的 <code>setup.sh</code> / <code>setup.ps1</code>，之后 push 自动直连 GitHub
+                    💡 点击复制按钮可同时复制 <strong>clone 命令</strong> + <strong>push 直连配置</strong>，粘贴到终端即可
                 </p>
             </div>
         </div>
@@ -487,11 +487,14 @@
         document.getElementById('proxyDomainDisplay').textContent = 'https://' + proxyDomain;
 
         /* ====== 更新 Clone 命令 ====== */
+        var gCloneCmd = '', gPushCfg = '', gRepoName = '';
         function updateCloneCmd() {
             var raw = document.getElementById('repoInput').value.trim();
-            var output = document.getElementById('cloneCmdOutput');
             if (!raw) {
-                output.value = 'git clone https://' + proxyDomain + '/https://github.com/user/repo.git';
+                gCloneCmd = 'git clone https://' + proxyDomain + '/https://github.com/user/repo.git';
+                gPushCfg = 'cd repo && git config url."https://github.com/".pushInsteadOf "https://' + proxyDomain + '/https://github.com/"';
+                gRepoName = 'repo';
+                document.getElementById('cloneCmdOutput').value = gCloneCmd;
                 return;
             }
             /* 智能解析：兼容 user/repo、完整 URL、git clone 命令 */
@@ -510,21 +513,31 @@
                 }
             }
             if (user && repoName) {
-                output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + user + '/' + repoName + '.git';
+                gCloneCmd = 'git clone https://' + proxyDomain + '/https://github.com/' + user + '/' + repoName + '.git';
+                gRepoName = repoName;
             } else {
-                output.value = 'git clone https://' + proxyDomain + '/https://github.com/' + repo;
+                gCloneCmd = 'git clone https://' + proxyDomain + '/https://github.com/' + repo;
+                gRepoName = repo.replace(/.*\//, '');
             }
+            gPushCfg = 'cd ' + gRepoName + ' && git config url."https://github.com/".pushInsteadOf "https://' + proxyDomain + '/https://github.com/"';
+            document.getElementById('cloneCmdOutput').value = gCloneCmd;
         }
 
-        /* ====== 复制 Clone 命令 ====== */
+        /* ====== 复制命令（clone + push 直连） ====== */
         function copyCloneCmd() {
-            var output = document.getElementById('cloneCmdOutput');
-            output.select();
-            output.setSelectionRange(0, 99999);
+            /* 组合输出：clone 命令 + push 直连配置 */
+            var text = gCloneCmd + '\n' + gPushCfg;
             try {
-                navigator.clipboard.writeText(output.value).then(function() { showToast('已复制到剪贴板'); });
+                navigator.clipboard.writeText(text).then(function() { showToast('已复制 clone + push 配置'); });
             } catch (e) {
+                /* 降级：创建临时 textarea 复制 */
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
                 var ok = document.execCommand('copy');
+                document.body.removeChild(ta);
                 if (ok) showToast('已复制到剪贴板');
                 else alert('复制失败，请手动复制');
             }
