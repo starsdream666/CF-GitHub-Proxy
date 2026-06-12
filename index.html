@@ -496,14 +496,13 @@
             }
             /* 智能解析：兼容 user/repo、完整 URL、git clone 命令 */
             var repo = raw
-                .replace(/^git\s+clone\s+/i, '')   // 去掉 git clone 前缀
-                .replace(/^https?:\/\/github\.com\//i, '')  // 去掉 GitHub URL
-                .replace(/\.git$/i, '')             // 去掉 .git 后缀
-                .replace(/\/+$/, '');               // 去掉尾部斜杠
+                .replace(/^git\s+clone\s+/i, '')
+                .replace(/^https?:\/\/github\.com\//i, '')
+                .replace(/\.git$/i, '')
+                .replace(/\/+$/, '');
             var parts = repo.split('/');
             var user = '', repoName = '';
             if (parts.length >= 2) {
-                // 取最后两段有意义的部分
                 var clean = parts.filter(function(p) { return p.length > 0; });
                 if (clean.length >= 2) {
                     user = clean[clean.length - 2];
