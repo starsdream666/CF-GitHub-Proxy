@@ -52,7 +52,7 @@ enabled = true   # language server tools; servers launch lazily when used
 # Rules are "Tool" or "Tool(specifier)"; e.g. Bash(go test:*), Edit(src/**).
 mode  = "ask"
 # deny = ["Bash(rm -rf*)", "Bash(git push*)"]   # hard-blocked in every mode
-allow = ["task", "Edit", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git remote -v)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git diff reasonix.toml)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git add reasonix.toml && git commit -m \"chore: 更新 reasonix.toml 权限配置\")"]
+allow = ["task", "Edit", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git remote -v)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git diff reasonix.toml)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git add reasonix.toml && git commit -m \"chore: 更新 reasonix.toml 权限配置\")", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git push)"]
 # ask = ["Edit(src/**)"]   # force a prompt even if otherwise allowed
 
 [sandbox]

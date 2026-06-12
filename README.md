@@ -34,6 +34,40 @@ github release、archive以及项目文件的加速项目，支持clone，github
 - gist：https://gist.githubusercontent.com/cielpy/351557e6e465c12986419ac5a4dd2568/raw/cmd.py
 
 - api：https://api.github.com/repos/Geekertao/CF-Workers-GitHub-Proxy
+
+## git clone 加速与 push 配置
+
+使用代理 `git clone` 后，git 会将代理地址保存为 remote URL，导致后续 `git push` 失败（认证不通过）。
+
+### 一键配置（推荐）
+
+clone 本项目后执行一次即可，之后所有仓库的 clone/pull 走代理，push 自动直连 GitHub：
+
+**Windows PowerShell:**
+```powershell
+.\setup.ps1 <你的代理域名>
+```
+
+**Linux / macOS / Git Bash:**
+```bash
+./setup.sh <你的代理域名>
+```
+
+示例：
+```bash
+./setup.sh sgh.cfwork.cc.cd
+```
+
+### 手动配置
+
+```bash
+git config --global url."https://github.com/".insteadOf "https://你的代理域名/https://github.com/"
+```
+
+配置后：
+- `git clone` / `git pull` → 走代理加速 ✅
+- `git push` → git 自动替换为直连 GitHub ✅
+
 ## Workers 部署方法
 ### 部署 Cloudflare Worker：
 
