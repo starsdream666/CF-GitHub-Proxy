@@ -1,166 +1,235 @@
 # CF-Workers-GitHub-Proxy
-#### 2025.6.12 更新：全新 Web 界面 · 浅色/深色主题 · Git Clone 一键复制 · Push 支持 🎉
-## 简介
-github release、archive以及项目文件的加速项目，支持clone，github api，Cloudflare Workers 版本
 
-## 使用
+<div align="center">
 
-直接在copy出来的url前加`https://ghfile.geekertao.top/`,`https://gh.geekertao.top/`,`https://github.dpik.top/`或`https://gh.felicity.ac.cn/`即可
+🚀 **全场景 GitHub 访问加速代理** · Cloudflare Workers / Snippets 双模部署
 
-也可以直接访问你的代理域名，使用 Web 界面操作。
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Cloudflare%20Workers-orange)](https://workers.cloudflare.com/)
+[![Snippets](https://img.shields.io/badge/supports-Cloudflare%20Snippets-blueviolet)](https://developers.cloudflare.com/rules/snippets/)
 
-### 🆕 Web 界面功能
+</div>
 
-- 🌓 **浅色/深色主题** — 一键切换，自动记忆偏好
-- 📦 **Git Clone 加速** — 输入仓库路径，一键生成并复制 clone 命令
-- 🚀 **文件/API 加速** — 粘贴 GitHub 链接即刻加速访问
-- 📋 **示例点击填充** — 6 种常见 URL 格式，点击自动填入
-- ⌨️ **键盘快捷键** — `Ctrl+K` 聚焦输入框，`Ctrl+J` 聚焦 clone 输入
-- 💡 **Push 提示** — 引导用户运行 `setup.sh` / `setup.ps1` 配置 push 直连
+---
 
-界面代码位于 [index.html](./index.html)，已内嵌于 Worker 中，无需额外托管。
+## 📖 简介
 
-***大量使用建议自行部署，以上域名仅为演示使用，可以轻量使用。***
+在 **GitHub Release · Archive · Raw · API · Gist · Git Clone** 等链接前加上你的代理域名，即可通过 Cloudflare 全球边缘网络加速访问，解决国内访问 GitHub 缓慢、超时、断连的问题。
 
-访问私有仓库可以通过
+**本分支新增特性：**
+- 🌓 浅色 / 深色主题 Web 操作界面
+- 📦 Git Clone 命令一键生成 + 复制
+- 📤 Git Push 支持（需 Business 及以上计划）
+- 🔗 复制命令自动附带 `pushInsteadOf` 配置，push 直连 GitHub
+- 🖥️ Workers 和 Snippets 双部署方案
 
-`git clone https://user:TOKEN@ghfile.geekertao.top/https://github.com/xxxx/xxxx`，`git clone https://user:TOKEN@github.dpik.top/https://github.com/xxxx/xxxx`，`git clone https://user:TOKEN@gh.felicity.ac.cn/https://github.com/xxxx/xxxx` [#71](https://github.com/hunshcn/gh-proxy/issues/71)
+---
 
-以下都是合法输入（仅示例，文件不存在）：
+## 🚀 快速开始
 
-- 分支源码：https://github.com/hunshcn/project/archive/master.zip
+### 使用公开实例（轻量使用）
 
-- release源码：https://github.com/hunshcn/project/archive/v0.1.0.tar.gz
+在 GitHub 链接前直接加以下任一前缀：
 
-- release文件：https://github.com/hunshcn/project/releases/download/v0.1.0/example.zip
+| 实例域名 | 状态 |
+|----------|------|
+| `https://ghfile.geekertao.top/` | 演示 |
+| `https://gh.geekertao.top/` | 演示 |
+| `https://github.dpik.top/` | 演示 |
+| `https://gh.felicity.ac.cn/` | 演示 |
 
-- 分支文件：https://github.com/hunshcn/project/blob/master/filename
-
-- commit文件：https://github.com/hunshcn/project/blob/1111111111111111111111111111/filename
-
-- gist：https://gist.githubusercontent.com/cielpy/351557e6e465c12986419ac5a4dd2568/raw/cmd.py
-
-- api：https://api.github.com/repos/Geekertao/CF-Workers-GitHub-Proxy
-
-## git clone 加速与 push 配置
-
-使用代理 `git clone` 后，git 会将代理地址保存为 remote URL，导致后续 `git push` 失败（认证不通过）。
-
-### 一键配置（推荐）
-
-clone 本项目后执行一次即可，之后所有仓库的 clone/pull 走代理，push 自动直连 GitHub：
-
-**Windows PowerShell:**
-```powershell
-.\setup.ps1 <你的代理域名>
+```
+原始链接:  https://github.com/user/repo/releases/download/v1.0/file.zip
+加速链接:  https://ghfile.geekertao.top/https://github.com/user/repo/releases/download/v1.0/file.zip
 ```
 
-**Linux / macOS / Git Bash:**
+> ⚠️ 以上为演示用途，大量使用请自行部署。
+
+### 使用 Web 界面
+
+直接访问你的代理域名，在网页中粘贴链接或生成 clone 命令。
+
+---
+
+## 🌐 Web 界面
+
+访问代理域名首页即可使用，功能包括：
+
+| 功能区 | 说明 |
+|--------|------|
+| 🚀 文件/API 加速 | 粘贴 GitHub 链接，点击加速直接下载 |
+| 📦 Git Clone 生成器 | 输入 `user/repo`（支持完整 URL），自动生成 clone 命令 |
+| 📋 复制命令 | 一键复制 **clone 命令 + push 直连配置**，粘贴到终端即用 |
+| 🌓 主题切换 | 浅色/深色一键切换，自动记忆偏好 |
+| 📃 示例填充 | 6 种 URL 格式，点击自动填入输入框 |
+| ⌨️ 快捷键 | `Ctrl+K` 聚焦文件输入 · `Ctrl+J` 聚焦 clone 输入 |
+
+界面内嵌于 Worker 中（[index.html](./index.html)），无需额外托管静态资源。
+
+---
+
+## 📋 支持的 URL 类型
+
+| 类型 | 示例 URL |
+|------|----------|
+| 📁 分支源码 | `https://github.com/user/repo/archive/master.zip` |
+| 📦 Release 源码 | `https://github.com/user/repo/archive/v0.1.0.tar.gz` |
+| 📥 Release 文件 | `https://github.com/user/repo/releases/download/v0.1.0/file.zip` |
+| 📄 分支文件 | `https://github.com/user/repo/blob/main/README.md` |
+| 💾 Commit 文件 | `https://github.com/user/repo/blob/abc123/filename` |
+| 📝 Gist | `https://gist.githubusercontent.com/user/abc123/raw/file.py` |
+| ☁️ API | `https://api.github.com/repos/user/repo` |
+| 📦 Git Clone | `https://github.com/user/repo.git` (smart HTTP) |
+
+---
+
+## 🐙 Git Clone 与 Push
+
+### Clone（通过代理加速）
+
 ```bash
-./setup.sh <你的代理域名>
+git clone https://你的域名/https://github.com/用户/仓库.git
 ```
 
-示例：
-```bash
-./setup.sh sgh.cfwork.cc.cd
-```
-
-### 手动配置
+**私有仓库：**
 
 ```bash
-git config --global url."https://github.com/".pushInsteadOf "https://你的代理域名/https://github.com/"
+git clone https://用户名:TOKEN@你的域名/https://github.com/用户/仓库.git
 ```
 
-配置后：
-- `git clone` / `git pull` → 走代理加速 ✅（不受影响）
-- `git push` → git 自动替换为直连 GitHub ✅
+### Push 直连配置
 
-## Workers 部署方法
-### 部署 Cloudflare Worker：
+Clone 后 git 会把代理地址存为 remote URL，导致 push 失败。执行以下命令让 push 自动直连 GitHub：
 
-   - 在 Cloudflare Worker 控制台中创建一个新的 Worker。
-   - 将 [workers.js](./workers.js)  的内容粘贴到 Worker 编辑器中。
+```bash
+cd 仓库名
+git config url."https://github.com/".pushInsteadOf "https://你的域名/https://github.com/"
+```
 
-## Snippets 部署方法
-### 部署 Snippets：
+或使用项目自带的一键脚本（仅需执行一次，全局生效）：
 
-   - 需要检查是否开通了 Snippets 功能，订阅pro以上计划或灰度测试到才可以使用，使用以下代码在F12开发者控制台输入查看哪些已经开通了Snippets功能：
+```bash
+# Linux / macOS / Git Bash
+./setup.sh 你的域名
 
-   ```javascript
-   
-   (async function main() {
-    const zonesUrl = (page = 1) =>
-        `https://dash.cloudflare.com/api/v4/zones?type=full,partial,secondary&per_page=100&page=${page}`;
+# Windows PowerShell
+.\setup.ps1 你的域名
+```
 
-    async function fetchJson(url) {
-        const res = await fetch(url, { credentials: "include" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-        return res.json();
-    }
+> 💡 **最便捷方式**：使用 Web 界面的复制按钮，粘贴到终端的内容已同时包含 clone 命令和 push 配置，一条龙完成。
 
-    try {
-        const results = [];
-        let page = 1;
+### 效果
 
-        while (true) {
-            const zonesData = await fetchJson(zonesUrl(page));
-            const zones = Array.isArray(zonesData.result) ? zonesData.result : [];
-            if (zones.length === 0) break;
+```
+git pull  → 走代理加速 ✅
+git push  → 自动直连 GitHub ✅（pushInsteadOf 替你替换 URL）
+```
 
-            for (const zone of zones) {
-                const entitlementsUrl = `https://dash.cloudflare.com/api/v4/zones/${zone.id}/entitlements`;
-                const entData = await fetchJson(entitlementsUrl);
-                const entResults = Array.isArray(entData.result) ? entData.result : [];
-                const rule = entResults.find(r => r.feature?.key === "rulesets.snippets_rule_max");
-                const value = rule?.allocation?.value ?? 0;
-                if (value > 0) {
-                    results.push({
-                        zone_id: zone.id,
-                        zone_name: zone.name,
-                        rulesets_snippets_rule_max: value
-                    });
-                }
-            }
+---
 
-            const info = zonesData.result_info || {};
-            if (!info.page || info.page >= (info.total_pages || info.page)) break;
-            page++;
-        }
+## 🏗️ 部署
 
-        console.log(results);
-    } catch (err) {
-        console.error("请求失败:", err);
-    }
-})();
+### 方式一：Cloudflare Workers（适合入门）
+
+1. 打开 [Cloudflare Workers 控制台](https://dash.cloudflare.com/workers)
+2. 创建新 Worker
+3. 将 [`workers.js`](./workers.js) 内容粘贴到编辑器
+4. 绑定自定义域名（需经过 Cloudflare 代理）
+5. 保存并部署
+
+> Workers Free 计划有 10ms CPU 限制，仅适合文件下载加速。如需 Git Push 支持，请使用 Snippets + Business 计划。
+
+### 方式二：Cloudflare Snippets（推荐 · 需 Pro+ 计划）
+
+1. 确认已开通 Snippets 功能（Pro 以上计划或灰度用户）
+2. 在 Snippets 平台创建新 Snippet
+3. 将 [`snippets.js`](./snippets.js) 内容粘贴到编辑器
+4. 添加片段规则 → 自定义筛选表达式：
 
    ```
-     
-   
-   来自<https://blog.cmliussss.com/p/BPSUB/#%F0%9F%A4%96-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B>
-   - 在 Snippets 平台中创建一个新的 Snippet。
-   - 将 [snippets.js](./snippets.js)  的内容粘贴到 Snippet 编辑器中。
-   - 编辑页添加“片段规则”为“自定义筛选表达式“中的”“当传入请求匹配时...”，输入以下表达式：
-
+   (http.host eq "你的域名")
    ```
-   (http.host eq "yourghproxydomain.com")
-   ```
-注：请将 `yourghproxydomain.com` 替换为你实际使用的域名，且为有经过 Cloudflare 代理的域名，否则无法生效，添加优选CNAME也可。
 
-- 保存并部署 Snippet。
+5. 保存并部署
 
+> 将 `你的域名` 替换为实际代理域名，该域名必须经过 Cloudflare 代理（橙色云朵）。
 
-## 项目文件说明
+### 两种部署方式对比
 
--  **`workers.js`**  ：基于 [gh-proxy](https://github.com/hunshcn/gh-proxy) 项目的 [`index.js`](https://github.com/hunshcn/gh-proxy/blob/master/index.js) 修改，已将 `ASSET_URL` 配置为我的 GitHub Pages 地址。
-- **自定义配置**：如需修改 GitHub Pages 地址，请前往 [Geekertao.github.io](https://github.com/Geekertao/Geekertao.github.io/tree/main/gh-proxy) 仓库下载源码后编辑。
-- **页面代码**：HTML 部分参考自 [CF-Workers-GitHub](https://github.com/cmliu/CF-Workers-GitHub/) 项目的 [`_worker.js`](https://github.com/cmliu/CF-Workers-GitHub/blob/main/_worker.js) 文件。
+| | Workers | Snippets |
+|---|---|---|
+| 最低计划 | Free | Pro / Business |
+| 请求体大小限制 | Free: ~100KB / Paid: 100MB | 继承域名计划 |
+| Git Push 支持 | Paid 计划可用 | ✅ 推荐 |
+| Web 界面 | ✅ | ✅ |
+| 文件加速 | ✅ | ✅ |
+| 部署复杂度 | 低 | 中 |
 
-# 致谢
-[gh-proxy](https://github.com/hunshcn/gh-proxy)、[jsproxy](https://github.com/EtherDream/jsproxy/)、[CF-Workers-GitHub](https://github.com/cmliu/CF-Workers-GitHub/)
+---
 
-# 赞助
-<a href="https://afdian.com/a/Geekertao" target="_blank" rel="noopener noreferrer" style="flex-shrink: 0;">
-      <img src="https://img.shields.io/badge/💵_爱发电-FF4D4D?style=flat-square&logo=usd&logoColor=white" alt="爱发电" style="max-height: 50px;">
-    </a>
+## 📁 项目文件
 
+| 文件 | 说明 |
+|------|------|
+| [`workers.js`](./workers.js) | Cloudflare Worker 入口（Service Worker 格式） |
+| [`snippets.js`](./snippets.js) | Cloudflare Snippet 入口（ES Module 格式） |
+| [`index.html`](./index.html) | Web 操作界面（已内嵌于 Worker，也支持单独托管） |
+| [`setup.sh`](./setup.sh) | Linux/macOS 一键配置脚本（`pushInsteadOf`） |
+| [`setup.ps1`](./setup.ps1) | Windows PowerShell 一键配置脚本 |
+| [`README.md`](./README.md) | 本文件 |
 
+---
+
+## ⚙️ 自定义配置
+
+编辑 `workers.js` 或 `snippets.js` 顶部的常量：
+
+| 配置项 | 默认值 | 说明 |
+|--------|--------|------|
+| `PREFIX` | `'/'` | 路由前缀，如 `example.com/gh/*` 则设为 `'/gh/'` |
+| `jsdelivr` | `0` | 设为 `1` 开启 jsDelivr CDN 镜像（blob/raw 文件） |
+| `whiteList` | `[]` | 路径白名单，填入后仅匹配的路径可访问，如 `['/username/']` |
+| `ASSET_URL` | GitHub Pages 地址 | 静态资源回退地址（Worker 已内嵌首页，一般无需修改） |
+
+---
+
+## 🔧 工作原理
+
+```
+用户请求
+  │
+  ▼
+https://你的域名/https://github.com/user/repo/archive/main.zip
+  │
+  ▼
+Cloudflare Worker / Snippet
+  │  1. 剥离代理域名，提取目标 URL
+  │  2. 正则匹配 URL 类型
+  │  3. 转发到 GitHub（保留 method/headers/body）
+  │  4. 改写重定向 Location 保持经过代理
+  │  5. 返回响应给客户端
+  ▼
+GitHub 服务器
+```
+
+- **GET 请求**（下载/浏览）：`redirect: 'manual'` 手动改写 Location，确保客户端始终走代理
+- **POST 请求**（Git Push）：`redirect: 'follow'` 由运行时透明处理，避免 body 流消费问题
+- **首页访问**：直接返回内嵌的 `index.html`，无需外部托管
+
+---
+
+## 🙏 致谢
+
+本项目基于以下优秀开源项目：
+
+- [gh-proxy](https://github.com/hunshcn/gh-proxy) — 核心代理逻辑
+- [CF-Workers-GitHub](https://github.com/cmliu/CF-Workers-GitHub/) — 页面参考
+- [jsproxy](https://github.com/EtherDream/jsproxy/) — 早期思路启发
+
+---
+
+## 💰 赞助
+
+<a href="https://afdian.com/a/Geekertao" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/💵_爱发电-FF4D4D?style=flat-square&logo=usd&logoColor=white" alt="爱发电">
+</a>
