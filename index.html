@@ -482,11 +482,11 @@
     </div>
 
     <script>
-        // ====== 获取当前代理域名 ======
+        /* ====== 获取当前代理域名 ====== */
         const proxyDomain = location.host;
         document.getElementById('proxyDomainDisplay').textContent = 'https://' + proxyDomain;
 
-        // ====== 更新 Clone 命令 ======
+        /* ====== 更新 Clone 命令 ====== */
         function updateCloneCmd() {
             const repo = document.getElementById('repoInput').value.trim();
             const output = document.getElementById('cloneCmdOutput');
@@ -502,57 +502,66 @@
             }
         }
 
-        // ====== 复制 Clone 命令 ======
+        /* ====== 复制 Clone 命令 ====== */
         function copyCloneCmd() {
-            const output = document.getElementById('cloneCmdOutput');
+            var output = document.getElementById('cloneCmdOutput');
             output.select();
-            navigator.clipboard.writeText(output.value).then(() => showToast('✅ 已复制到剪贴板'));
+            output.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(output.value).then(function() { showToast('已复制到剪贴板'); });
+            } catch (e) {
+                var ok = document.execCommand('copy');
+                if (ok) showToast('已复制到剪贴板');
+                else alert('复制失败，请手动复制');
+            }
         }
 
-        // ====== 填充输入框 ======
+        /* ====== 填充输入框 ====== */
         function fillInput(url) {
             document.getElementById('urlInput').value = url;
             document.getElementById('urlInput').focus();
         }
 
-        // ====== 提交加速 ======
+        /* ====== 提交加速 ====== */
         function handleSubmit(e) {
             e.preventDefault();
-            const input = document.getElementsByName('q')[0];
-            const path = input.value.trim();
-            window.open(location.origin + '/' + path, '_blank');
+            var input = document.getElementsByName('q')[0];
+            var path = input.value.trim();
+            if (path) {
+                window.location.href = location.origin + '/' + path;
+            }
         }
 
-        // ====== 主题切换 ======
+        /* ====== 主题切换 ====== */
         function toggleTheme() {
-            const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
+            var html = document.documentElement;
+            var current = html.getAttribute('data-theme');
+            var next = current === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', next);
             try { localStorage.setItem('gh-proxy-theme', next); } catch(e) {}
         }
 
-        // ====== 初始化主题 ======
+        /* ====== 初始化主题 ====== */
         (function() {
             try {
-                const saved = localStorage.getItem('gh-proxy-theme');
+                var saved = localStorage.getItem('gh-proxy-theme');
                 if (saved === 'light' || saved === 'dark') {
                     document.documentElement.setAttribute('data-theme', saved);
                 }
             } catch(e) {}
         })();
 
-        // ====== Toast ======
-        let toastTimer;
+        /* ====== Toast ====== */
+        var toastTimer;
         function showToast(msg) {
-            const toast = document.getElementById('toast');
+            var toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.add('show');
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+            toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 1800);
         }
 
-        // ====== 键盘快捷键 ======
+        /* ====== 键盘快捷键 ====== */
         document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault();
