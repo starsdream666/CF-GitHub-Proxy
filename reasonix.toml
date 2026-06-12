@@ -52,7 +52,7 @@ enabled = true   # language server tools; servers launch lazily when used
 # Rules are "Tool" or "Tool(specifier)"; e.g. Bash(go test:*), Edit(src/**).
 mode  = "ask"
 # deny = ["Bash(rm -rf*)", "Bash(git push*)"]   # hard-blocked in every mode
-allow = ["task", "Edit", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git remote -v)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git diff reasonix.toml)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git add reasonix.toml && git commit -m \"chore: 更新 reasonix.toml 权限配置\")", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git push)"]
+allow = ["task", "Edit", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git remote -v)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git diff reasonix.toml)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git add reasonix.toml && git commit -m \"chore: 更新 reasonix.toml 权限配置\")", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git push)", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git commit -m \"feat: 添加 setup 一键配置脚本，解决 git clone 后 push 失败问题\n\n- setup.sh: Linux/macOS/Git Bash 一键配置 git insteadOf\n- setup.ps1: Windows PowerShell 一键配置脚本\n- README: 新增 git clone 加速与 push 配置说明章节\")", "Bash(cd \"C:\\Users\\86156\\Desktop\\CF-GitHub-Proxy\" && git add -A && git commit -m \"fix: setup 脚本改用 pushInsteadOf，只影响 push 不影响 clone/pull\")"]
 # ask = ["Edit(src/**)"]   # force a prompt even if otherwise allowed
 
 [sandbox]

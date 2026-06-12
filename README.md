@@ -61,11 +61,11 @@ clone 本项目后执行一次即可，之后所有仓库的 clone/pull 走代�
 ### 手动配置
 
 ```bash
-git config --global url."https://github.com/".insteadOf "https://你的代理域名/https://github.com/"
+git config --global url."https://github.com/".pushInsteadOf "https://你的代理域名/https://github.com/"
 ```
 
 配置后：
-- `git clone` / `git pull` → 走代理加速 ✅
+- `git clone` / `git pull` → 走代理加速 ✅（不受影响）
 - `git push` → git 自动替换为直连 GitHub ✅
 
 ## Workers 部署方法

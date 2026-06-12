@@ -22,19 +22,21 @@ $Domain = $Domain.TrimEnd('/')
 
 $ProxyUrl = "https://${Domain}/https://github.com/"
 
-Write-Host "配置 git insteadOf:" -ForegroundColor Yellow
+Write-Host "配置 git pushInsteadOf:" -ForegroundColor Yellow
 Write-Host "  代理: $ProxyUrl"
-Write-Host "  → 自动替换为: https://github.com/"
+Write-Host "  → push 自动替换为: https://github.com/"
+Write-Host "  → clone/pull 不受影响，继续走代理加速"
 
-git config --global url."https://github.com/".insteadOf "$ProxyUrl"
+git config --global url."https://github.com/".pushInsteadOf "$ProxyUrl"
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "✓ 配置完成!" -ForegroundColor Green
     Write-Host ""
     Write-Host "现在可以这样使用:"
-    Write-Host "  git clone https://${Domain}/https://github.com/用户/仓库.git"
+    Write-Host "  git clone https://${Domain}/https://github.com/用户/仓库.git  # 走代理加速"
     Write-Host "  cd 仓库"
-    Write-Host "  # pull 走代理，push 自动直连 GitHub，无需额外操作"
+    Write-Host "  # git pull → 走代理加速 ✅"
+    Write-Host "  # git push → 自动直连 GitHub，无需额外操作 ✅"
 } else {
     Write-Host "✗ 配置失败，请检查 git 是否已安装" -ForegroundColor Red
 }
