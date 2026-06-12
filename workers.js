@@ -137,11 +137,12 @@ function httpHandler(req, pathname) {
     }
     const urlObj = newUrl(urlStr)
 
+    const hasBody = req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH'
     /** @type {RequestInit} */
     const reqInit = {
         method: req.method,
         headers: reqHdrNew,
-        redirect: 'manual',
+        redirect: hasBody ? 'follow' : 'manual',
         body: req.body
     }
     return proxy(urlObj, reqInit)
